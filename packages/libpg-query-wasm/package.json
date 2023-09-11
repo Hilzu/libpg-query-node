@@ -1,0 +1,18 @@
+{
+  "name": "libpg-query-wasm",
+  "version": "0.0.0",
+  "description": "",
+  "main": "test.mjs",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "build": "npm run clean && npm run build:libpg_query && npm run build:wasm",
+    "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = .*/AR = emar rs/' Makefile && emmake make build)",
+    "build:wasm": "emcc -o dist/hello.mjs -s EXIT_RUNTIME=0 -s EXPORTED_RUNTIME_METHODS=ccall,cwrap -s EXPORTED_FUNCTIONS=_parse -I libpg_query -L libpg_query -l pg_query hello.c",
+    "clean": "rm -rf dist/* && (cd libpg_query && make clean)",
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

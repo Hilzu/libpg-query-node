@@ -1,0 +1,20 @@
+{
+  "name": "prettier-plugin-postgresql-root",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/plugin.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "npm run test:format && npm run test:lint"
+  },
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "packages/libpg-query-wasm",
+    "packages/prettier-plugin-postgresql"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "3.0.3"
+  }
+}
