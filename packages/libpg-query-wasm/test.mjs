@@ -1,7 +1,4 @@
-import Module from "./dist/hello.mjs";
+import { parse } from "./libpg-query.mjs";
 
-const module = await Module();
-console.log(module);
-const parse = module.cwrap("parse");
-console.log(parse);
-console.log(parse());
+const res = parse("kekkonen");
+console.log({ res });
