@@ -2,13 +2,16 @@
   "name": "prettier-plugin-postgresql-root",
   "version": "0.0.0",
   "description": "",
-  "main": "src/plugin.mjs",
   "type": "module",
   "scripts": {
-    "test": "npm run test:format && npm run test:lint"
+    "format": "npm run prettier -- --write",
+    "prettier": "prettier .",
+    "test": "npm run test:format && npm run --workspaces test",
+    "test:format": "npm run prettier -- --check"
   },
   "author": "",
   "license": "ISC",
+  "private": true,
   "workspaces": [
     "packages/libpg-query-wasm",
     "packages/prettier-plugin-postgresql"
