@@ -1,4 +1,5 @@
 #include <emscripten/bind.h>
+#include <emscripten/val.h>
 
 #include <pg_query.h>
 
@@ -47,6 +48,34 @@ ParseResult parse(std::string input) {
   return parse_result;
 }
 
+struct ScanError {
+  std::string stderr_buffer;
+  Error error;
+};
+
+PgQueryScanResult scan_result;
+
+ScanError scan(std::string input) {
+  auto result = pg_query_scan(input.c_str());
+  ScanError scan_error;
+  if (result.stderr_buffer) {
+    scan_error.stderr_buffer = std::string(result.stderr_buffer);
+  }
+  if (result.error) {
+    scan_error.error = handleError(result.error);
+  }
+  scan_result = result;
+  return scan_error;
+}
+
+val get_protobuf() {
+  return val(typed_memory_view(
+      scan_result.pbuf.len,
+      reinterpret_cast<unsigned char *>(scan_result.pbuf.data)));
+}
+
+void free_scan_result() { pg_query_free_scan_result(scan_result); }
+
 EMSCRIPTEN_BINDINGS(my_module) {
   value_object<Error>("Error")
       .field("message", &Error::message)
@@ -61,5 +90,15 @@ EMSCRIPTEN_BINDINGS(my_module) {
       .field("stderr_buffer", &ParseResult::stderr_buffer)
       .field("error", &ParseResult::error);
 
+  value_object<ScanError>("ScanError")
+      .field("stderr_buffer", &ScanError::stderr_buffer)
+      .field("error", &ScanError::error);
+
   function("parse", &parse);
+
+  function("scan", &scan);
+
+  function("get_protobuf", &get_protobuf);
+
+  function("free_scan_result", &free_scan_result);
 }

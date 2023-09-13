@@ -1,4 +1,5 @@
 import factory from "./dist/lib.mjs";
+import { ScanResult } from "./protobuf.mjs";
 
 const module = await factory();
 
@@ -11,17 +12,32 @@ export class LibpgQueryError extends Error {
   lineno = 0;
 }
 
+function throwError(res) {
+  const err = new LibpgQueryError(res.error.message);
+  err.filename = res.error.filename;
+  err.funcname = res.error.funcname;
+  err.context = res.error.context;
+  err.cursorpos = res.error.cursorpos;
+  err.lineno = res.error.lineno;
+  throw err;
+}
+
 export const parse = (query) => {
   const res = module.parse(query);
   if (res.error?.message) {
-    const err = new LibpgQueryError(res.error.message);
-    err.filename = res.error.filename;
-    err.funcname = res.error.funcname;
-    err.context = res.error.context;
-    err.cursorpos = res.error.cursorpos;
-    err.lineno = res.error.lineno;
-    throw err;
+    throwError(res);
   }
 
   return JSON.parse(res.parse_tree);
+};
+
+export const scan = (query) => {
+  const res = module.scan(query);
+  if (res.error?.message) {
+    throwError(res);
+  }
+  const buf = module.get_protobuf();
+  const json = ScanResult.decode(buf).toJSON();
+  module.free_scan_result();
+  return json;
 };
