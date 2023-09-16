@@ -64,6 +64,22 @@ val get_protobuf() {
 
 void free_scan_result() { pg_query_free_scan_result(scan_result); }
 
+struct FingerprintResult {
+  std::string fingerprint;
+  Error error;
+};
+
+FingerprintResult fingerprint(std::string input) {
+  auto result = pg_query_fingerprint(input.c_str());
+  FingerprintResult fingerprint_result;
+  fingerprint_result.fingerprint = std::string(result.fingerprint_str);
+  if (result.error) {
+    fingerprint_result.error = handleError(result.error);
+  }
+  pg_query_free_fingerprint_result(result);
+  return fingerprint_result;
+}
+
 EMSCRIPTEN_BINDINGS(my_module) {
   value_object<Error>("Error")
       .field("message", &Error::message)
@@ -84,4 +100,10 @@ EMSCRIPTEN_BINDINGS(my_module) {
   function("get_protobuf", &get_protobuf);
 
   function("free_scan_result", &free_scan_result);
+
+  value_object<FingerprintResult>("FingerprintResult")
+      .field("fingerprint", &FingerprintResult::fingerprint)
+      .field("error", &FingerprintResult::error);
+
+  function("fingerprint", &fingerprint);
 }

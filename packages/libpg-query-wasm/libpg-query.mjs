@@ -47,3 +47,10 @@ export const scan = (query) => {
   module.free_scan_result();
   return json;
 };
+
+export const fingerprint = (query) => {
+  const res = module.fingerprint(query);
+  assertError(res.error);
+
+  return res.fingerprint;
+};
