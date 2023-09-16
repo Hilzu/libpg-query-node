@@ -1,6 +1,6 @@
 {
   "name": "libpg-query-wasm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Webassembly bindings for libpg_query",
   "author": "Santeri Hiltunen <github@me.hilzu.moe> (https://hilzu.moe/)",
   "license": "BSD-3-Clause",
