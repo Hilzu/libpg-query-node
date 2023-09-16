@@ -1,12 +1,27 @@
 {
   "name": "libpg-query-node",
   "version": "0.0.0",
-  "description": "",
+  "description": "Collection of packages for using libpg_query in Node.js",
   "type": "module",
+  "author": "Santeri Hiltunen <github@me.hilzu.moe> (https://hilzu.moe/)",
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/Hilzu/libpg-query-node#readme",
+  "bugs": {
+    "url": "https://github.com/Hilzu/libpg-query-node/issues"
+  },
+  "repository": {
+    "url": "https://github.com/Hilzu/libpg-query-node.git",
+    "type": "git"
+  },
+  "private": true,
   "engines": {
     "node": "^18.0.0 || >=20.0.0",
     "npm": ">=10.1.0"
   },
+  "workspaces": [
+    "packages/libpg-query-wasm",
+    "packages/prettier-plugin-postgresql"
+  ],
   "scripts": {
     "build": "npm run --workspaces --if-present build",
     "format": "npm run prettier -- --write",
@@ -14,13 +29,6 @@
     "test": "npm run test:format && npm run --workspaces --if-present test",
     "test:format": "npm run prettier -- --check"
   },
-  "author": "",
-  "license": "BSD-3-Clause",
-  "private": true,
-  "workspaces": [
-    "packages/libpg-query-wasm",
-    "packages/prettier-plugin-postgresql"
-  ],
   "dependencies": {},
   "devDependencies": {
     "prettier": "3.0.3"

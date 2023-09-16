@@ -1,9 +1,18 @@
 {
   "name": "libpg-query-wasm",
   "version": "0.0.0",
-  "description": "",
-  "author": "",
+  "description": "Webassembly bindings for libpg_query",
+  "author": "Santeri Hiltunen <github@me.hilzu.moe> (https://hilzu.moe/)",
   "license": "BSD-3-Clause",
+  "homepage": "https://github.com/Hilzu/libpg-query-node/tree/main/packages/libpg-query-wasm#readme",
+  "bugs": {
+    "url": "https://github.com/Hilzu/libpg-query-node/issues"
+  },
+  "repository": {
+    "url": "https://github.com/Hilzu/libpg-query-node.git",
+    "type": "git",
+    "directory": "./packages/libpg-query-wasm"
+  },
   "type": "module",
   "exports": "./libpg-query.mjs",
   "engines": {
