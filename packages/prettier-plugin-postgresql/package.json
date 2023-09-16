@@ -12,5 +12,5 @@
     "test": "exit 0"
   },
   "author": "",
-  "license": "ISC"
+  "license": "BSD-3-Clause"
 }

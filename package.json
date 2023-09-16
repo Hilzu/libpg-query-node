@@ -15,7 +15,7 @@
     "test:format": "npm run prettier -- --check"
   },
   "author": "",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "private": true,
   "workspaces": [
     "packages/libpg-query-wasm",
