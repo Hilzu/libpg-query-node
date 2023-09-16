@@ -7,11 +7,12 @@
   "type": "module",
   "exports": "./libpg-query.mjs",
   "scripts": {
-    "build": "npm run clean && npm run build:libpg_query && npm run build:wasm",
+    "build": "npm run clean && npm run build:libpg_query && npm run build:wasm && npm run build:wasm:types",
     "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = ar rs/AR = emar rs/' Makefile && emmake make build)",
-    "build:wasm": "emcc --bind -o dist/lib.mjs -I libpg_query -L libpg_query -l pg_query lib.cpp",
+    "build:wasm": "npm run emcc -- -o dist/lib.mjs",
+    "build:wasm:types": "npm run emcc -- --embind-emit-tsd dist/lib.d.ts",
     "clean": "rm -rf dist/* && (cd libpg_query && make clean)",
-    "start": "node .",
+    "emcc": "emcc --bind -I libpg_query -L libpg_query -l pg_query lib.cpp",
     "test": "node --test test/"
   },
   "dependencies": {
