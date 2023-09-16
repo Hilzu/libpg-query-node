@@ -55,8 +55,8 @@ export const fingerprint = (query) => {
   return res.fingerprint;
 };
 
-export const parsePLpgSQL = (query) => {
-  const res = module.parse_plpgsql(query);
+export const parsePLpgSQL = (functionSource) => {
+  const res = module.parse_plpgsql(functionSource);
   assertError(res.error);
 
   return JSON.parse(res.plpgsql_funcs);

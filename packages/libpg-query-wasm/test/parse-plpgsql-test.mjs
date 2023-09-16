@@ -3,6 +3,42 @@ import { strict as assert } from "node:assert";
 import { parsePLpgSQL } from "../libpg-query.mjs";
 
 describe("parse-plpgsql", () => {
+  it("parses simple function", () => {
+    const res = parsePLpgSQL(`
+CREATE FUNCTION f() RETURNS integer AS $$
+BEGIN
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;`);
+    assert.deepEqual(res, [
+      {
+        PLpgSQL_function: {
+          action: {
+            PLpgSQL_stmt_block: {
+              body: [
+                {
+                  PLpgSQL_stmt_return: {
+                    expr: { PLpgSQL_expr: { query: "1" } },
+                    lineno: 3,
+                  },
+                },
+              ],
+              lineno: 2,
+            },
+          },
+          datums: [
+            {
+              PLpgSQL_var: {
+                datatype: { PLpgSQL_type: { typname: "UNKNOWN" } },
+                refname: "found",
+              },
+            },
+          ],
+        },
+      },
+    ]);
+  });
+
   it("parses function", () => {
     const res = parsePLpgSQL(`
 CREATE OR REPLACE FUNCTION cs_fmt_browser_version(v_name varchar,
