@@ -5,10 +5,15 @@ const module = await factory();
 
 export class LibpgQueryError extends Error {
   name = "LibpgQueryError";
+  /** source of exception (e.g. parse.l) */
   filename = "";
+  /** source function of exception (e.g. SearchSysCache) */
   funcname = "";
+  /** additional context (optional) */
   context = "";
+  /** char in query at which exception occurred */
   cursorpos = 0;
+  /** source of exception (e.g. 104) */
   lineno = 0;
 }
 
