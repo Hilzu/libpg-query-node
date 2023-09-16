@@ -1,23 +1,33 @@
-name: Publish libpg-query-wasm
+name: Publish to npm
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Type of version bump"
+        description: Type of version bump
         required: true
         type: choice
         options:
           - major
           - minor
           - patch
+      package:
+        description: Package to publish
+        required: true
+        type: choice
+        options:
+          - libpg-query-wasm
+
+permissions:
+  id-token: write
+  contents: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/libpg-query-wasm
+        working-directory: ./packages/${{ github.event.inputs.package }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,11 +42,12 @@ jobs:
         uses: mymindstorm/setup-emsdk@v12
         with:
           version: "3.1.45"
+          actions-cache-folder: "emsdk-cache"
       - run: npm ci
       - run: npm run build
       - run:
-          ./scripts/publish.sh libpg-query-wasm ${{ github.event.inputs.version
-          }}
+          ./scripts/publish.sh ${{ github.event.inputs.package }} ${{
+          github.event.inputs.version }}
         working-directory: ./
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
