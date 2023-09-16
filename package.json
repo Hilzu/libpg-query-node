@@ -8,9 +8,10 @@
     "npm": ">=10.1.0"
   },
   "scripts": {
+    "build": "npm run --workspaces --if-present build",
     "format": "npm run prettier -- --write",
     "prettier": "prettier .",
-    "test": "npm run test:format && npm run --workspaces test",
+    "test": "npm run test:format && npm run --workspaces --if-present test",
     "test:format": "npm run prettier -- --check"
   },
   "author": "",
