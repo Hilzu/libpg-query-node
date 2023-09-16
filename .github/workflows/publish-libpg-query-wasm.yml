@@ -16,6 +16,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/libpg-query-wasm
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,8 +36,8 @@ jobs:
       - run: npm run build
       - run: npm version ${{ github.event.inputs.version }}
         if: github.event.inputs.version != 'same'
+      - run: git push --follow-tags
+        if: github.event.inputs.version != 'same'
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: git push --follow-tags
-        if: github.event.inputs.version != 'same'
