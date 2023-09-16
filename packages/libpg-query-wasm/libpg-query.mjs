@@ -38,6 +38,9 @@ export const scan = (query) => {
   }
   const buf = module.get_protobuf();
   const json = ScanResult.decode(buf).toJSON();
+  for (const token of json.tokens) {
+    token.source = query.slice(token.start ?? 0, token.end);
+  }
   module.free_scan_result();
   return json;
 };
