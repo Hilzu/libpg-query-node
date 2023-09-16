@@ -80,6 +80,22 @@ FingerprintResult fingerprint(std::string input) {
   return fingerprint_result;
 }
 
+struct ParsePlpgsqlResult {
+  std::string plpgsql_funcs;
+  Error error;
+};
+
+ParsePlpgsqlResult parse_plpgsql(std::string input) {
+  auto result = pg_query_parse_plpgsql(input.c_str());
+  ParsePlpgsqlResult parse_plpgsql_result;
+  parse_plpgsql_result.plpgsql_funcs = std::string(result.plpgsql_funcs);
+  if (result.error) {
+    parse_plpgsql_result.error = handleError(result.error);
+  }
+  pg_query_free_plpgsql_parse_result(result);
+  return parse_plpgsql_result;
+}
+
 EMSCRIPTEN_BINDINGS(my_module) {
   value_object<Error>("Error")
       .field("message", &Error::message)
@@ -106,4 +122,10 @@ EMSCRIPTEN_BINDINGS(my_module) {
       .field("error", &FingerprintResult::error);
 
   function("fingerprint", &fingerprint);
+
+  value_object<ParsePlpgsqlResult>("ParsePlpgsqlResult")
+      .field("plpgsql_funcs", &ParsePlpgsqlResult::plpgsql_funcs)
+      .field("error", &ParsePlpgsqlResult::error);
+
+  function("parse_plpgsql", &parse_plpgsql);
 }

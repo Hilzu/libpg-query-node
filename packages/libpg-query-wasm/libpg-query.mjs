@@ -54,3 +54,10 @@ export const fingerprint = (query) => {
 
   return res.fingerprint;
 };
+
+export const parsePLpgSQL = (query) => {
+  const res = module.parse_plpgsql(query);
+  assertError(res.error);
+
+  return JSON.parse(res.plpgsql_funcs);
+};
