@@ -10,7 +10,7 @@ echo "Making a $version_type release for $package"
 npm version "$version_type" --workspace "$package"
 new_version=$(jq -r .version "packages/$package/package.json")
 echo "New version: $new_version"
-# npm publish
+npm publish
 
 echo "Committing and pushing changes"
 if [[ -n "$CI" ]]; then
