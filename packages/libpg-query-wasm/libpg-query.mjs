@@ -17,30 +17,28 @@ export class LibpgQueryError extends Error {
   lineno = 0;
 }
 
-function throwError(res) {
-  const err = new LibpgQueryError(res.error.message);
-  err.filename = res.error.filename;
-  err.funcname = res.error.funcname;
-  err.context = res.error.context;
-  err.cursorpos = res.error.cursorpos;
-  err.lineno = res.error.lineno;
+function assertError(error) {
+  if (error.lineno === -1) return;
+  const err = new LibpgQueryError(error.message);
+  err.filename = error.filename;
+  err.funcname = error.funcname;
+  err.context = error.context;
+  err.cursorpos = error.cursorpos;
+  err.lineno = error.lineno;
   throw err;
 }
 
 export const parse = (query) => {
   const res = module.parse(query);
-  if (res.error?.message) {
-    throwError(res);
-  }
+  assertError(res.error);
 
   return JSON.parse(res.parse_tree);
 };
 
 export const scan = (query) => {
-  const res = module.scan(query);
-  if (res.error?.message) {
-    throwError(res);
-  }
+  const error = module.scan(query);
+  assertError(error);
+
   const buf = module.get_protobuf();
   const json = ScanResult.decode(buf).toJSON();
   for (const token of json.tokens) {

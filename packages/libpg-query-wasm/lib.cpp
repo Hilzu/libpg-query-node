@@ -9,15 +9,9 @@ struct Error {
   std::string message;
   std::string funcname;
   std::string filename;
-  int lineno;
-  int cursorpos;
+  int lineno = -1;
+  int cursorpos = -1;
   std::string context;
-};
-
-struct ParseResult {
-  std::string parse_tree;
-  std::string stderr_buffer;
-  Error error;
 };
 
 Error handleError(PgQueryError *error) {
@@ -34,13 +28,15 @@ Error handleError(PgQueryError *error) {
   return err;
 }
 
+struct ParseResult {
+  std::string parse_tree;
+  Error error;
+};
+
 ParseResult parse(std::string input) {
   auto result = pg_query_parse(input.c_str());
   ParseResult parse_result;
   parse_result.parse_tree = std::string(result.parse_tree);
-  if (result.stderr_buffer) {
-    parse_result.stderr_buffer = std::string(result.stderr_buffer);
-  }
   if (result.error) {
     parse_result.error = handleError(result.error);
   }
@@ -48,23 +44,15 @@ ParseResult parse(std::string input) {
   return parse_result;
 }
 
-struct ScanError {
-  std::string stderr_buffer;
-  Error error;
-};
-
 PgQueryScanResult scan_result;
 
-ScanError scan(std::string input) {
+Error scan(std::string input) {
   auto result = pg_query_scan(input.c_str());
-  ScanError scan_error;
-  if (result.stderr_buffer) {
-    scan_error.stderr_buffer = std::string(result.stderr_buffer);
-  }
-  if (result.error) {
-    scan_error.error = handleError(result.error);
-  }
   scan_result = result;
+  Error scan_error;
+  if (result.error) {
+    scan_error = handleError(result.error);
+  }
   return scan_error;
 }
 
@@ -87,12 +75,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
 
   value_object<ParseResult>("ParseResult")
       .field("parse_tree", &ParseResult::parse_tree)
-      .field("stderr_buffer", &ParseResult::stderr_buffer)
       .field("error", &ParseResult::error);
-
-  value_object<ScanError>("ScanError")
-      .field("stderr_buffer", &ScanError::stderr_buffer)
-      .field("error", &ScanError::error);
 
   function("parse", &parse);
 
