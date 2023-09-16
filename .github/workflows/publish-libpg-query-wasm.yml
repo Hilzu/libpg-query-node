@@ -6,10 +6,12 @@ on:
       version:
         description: "Type of version bump"
         required: true
+        type: choice
         options:
           - major
           - minor
           - patch
+          - same
 
 jobs:
   publish:
@@ -30,7 +32,9 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm version ${{ github.event.inputs.version }}
+        if: github.event.inputs.version != 'same'
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: git push --follow-tags
+        if: github.event.inputs.version != 'same'
