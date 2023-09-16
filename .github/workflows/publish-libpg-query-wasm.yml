@@ -11,7 +11,6 @@ on:
           - major
           - minor
           - patch
-          - same
 
 jobs:
   publish:
@@ -35,10 +34,9 @@ jobs:
           version: "3.1.45"
       - run: npm ci
       - run: npm run build
-      - run: npm version ${{ github.event.inputs.version }}
-        if: github.event.inputs.version != 'same'
-      - run: npm publish
+      - run:
+          ./scripts/publish.sh libpg-query-wasm ${{ github.event.inputs.version
+          }}
+        working-directory: ./
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: git push && git push --tags
-        if: github.event.inputs.version != 'same'
