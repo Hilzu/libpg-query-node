@@ -6,6 +6,10 @@
   "license": "ISC",
   "type": "module",
   "exports": "./libpg-query.mjs",
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0",
+    "npm": ">=10.1.0"
+  },
   "scripts": {
     "build": "npm run clean && npm run build:libpg_query && npm run build:wasm && npm run build:wasm:types",
     "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = ar rs/AR = emar rs/' Makefile && emmake make build)",

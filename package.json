@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "",
   "type": "module",
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0",
+    "npm": ">=10.1.0"
+  },
   "scripts": {
     "format": "npm run prettier -- --write",
     "prettier": "prettier .",
