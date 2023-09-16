@@ -1,5 +1,5 @@
 {
-  "name": "prettier-plugin-postgresql-root",
+  "name": "libpg-query-node",
   "version": "0.0.0",
   "description": "",
   "type": "module",
