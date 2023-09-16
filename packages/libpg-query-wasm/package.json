@@ -17,7 +17,7 @@
   "exports": "./libpg-query.mjs",
   "engines": {
     "node": "^18.0.0 || >=20.0.0",
-    "npm": ">=10.1.0"
+    "npm": ">=9.8.1"
   },
   "scripts": {
     "build": "npm run clean && npm run build:libpg_query && npm run build:wasm && npm run build:wasm:types && npm run copy:proto",

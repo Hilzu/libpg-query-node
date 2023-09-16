@@ -5,7 +5,7 @@
   "main": "index.js",
   "engines": {
     "node": "^18.0.0 || >=20.0.0",
-    "npm": ">=10.1.0"
+    "npm": ">=9.8.1"
   },
   "devDependencies": {},
   "scripts": {
