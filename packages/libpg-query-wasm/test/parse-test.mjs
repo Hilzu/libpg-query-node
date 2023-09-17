@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { parse } from "../libpg-query.mjs";
+import { parse } from "../dist/libpg-query.js";
 
 describe("parse", () => {
   it("parses simple statement", () => {

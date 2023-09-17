@@ -14,20 +14,24 @@
     "directory": "./packages/libpg-query-wasm"
   },
   "type": "module",
-  "exports": "./libpg-query.mjs",
+  "exports": {
+    "types": "./dist/libpg-query.d.ts",
+    "default": "./dist/libpg-query.js"
+  },
   "engines": {
     "node": "^18.0.0 || >=20.0.0",
     "npm": ">=9.8.1"
   },
   "scripts": {
-    "build": "npm run build:libpg_query && npm run build:wasm && npm run build:wasm:types && npm run copy:proto",
+    "build": "npm run build:libpg_query && npm run build:wasm && npm run build:wasm:types && npm run build:tsc && npm run copy:proto",
     "build:clean": "npm run clean && npm run build",
     "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = ar rs/AR = emar rs/' Makefile && emmake make build)",
+    "build:tsc": "tsc",
     "build:wasm": "npm run emcc -- -o dist/lib.mjs",
-    "build:wasm:types": "npm run emcc -- --embind-emit-tsd dist/lib.d.ts",
+    "build:wasm:types": "npm run emcc -- --embind-emit-tsd dist/lib.d.mts",
     "clean": "rm -rf dist/* && (cd libpg_query && make clean)",
     "copy:proto": "cp libpg_query/protobuf/pg_query.proto dist/",
-    "emcc": "emcc -O3 -Wall -Werror --bind -I libpg_query -L libpg_query -l pg_query lib.cpp",
+    "emcc": "emcc -O3 -Wall -Werror --bind -I libpg_query -L libpg_query -l pg_query src/lib.cpp",
     "test": "npm run test:node && npm run test:readme",
     "test:node": "node --test test/",
     "test:readme": "txm Readme.md"

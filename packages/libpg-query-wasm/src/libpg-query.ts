@@ -1,7 +1,8 @@
-import factory from "./dist/lib.mjs";
-import { ScanResult } from "./protobuf.mjs";
+// @ts-ignore: Generated types don't include the default export
+import factory, { MainModule, Error as LibError } from "../dist/lib.mjs";
+import { ScanResult } from "./protobuf.js";
 
-const module = await factory();
+const module: MainModule = await factory();
 
 export class LibpgQueryError extends Error {
   name = "LibpgQueryError";
@@ -17,29 +18,29 @@ export class LibpgQueryError extends Error {
   lineno = 0;
 }
 
-function assertError(error) {
+function assertError(error: LibError) {
   if (error.lineno === -1) return;
-  const err = new LibpgQueryError(error.message);
-  err.filename = error.filename;
-  err.funcname = error.funcname;
-  err.context = error.context;
+  const err = new LibpgQueryError(String(error.message));
+  err.filename = String(error.filename);
+  err.funcname = String(error.funcname);
+  err.context = String(error.context);
   err.cursorpos = error.cursorpos;
   err.lineno = error.lineno;
   throw err;
 }
 
-export const parse = (query) => {
+export const parse = (query: string): any => {
   const res = module.parse(query);
   assertError(res.error);
 
-  return JSON.parse(res.parse_tree);
+  return JSON.parse(String(res.parse_tree));
 };
 
-export const scan = (query) => {
+export const scan = (query: string): Record<string, any> => {
   const error = module.scan(query);
   assertError(error);
 
-  const buf = module.get_protobuf();
+  const buf: Uint8Array = module.get_protobuf();
   const json = ScanResult.decode(buf).toJSON();
   for (const token of json.tokens) {
     token.source = query.slice(token.start ?? 0, token.end);
@@ -48,16 +49,16 @@ export const scan = (query) => {
   return json;
 };
 
-export const fingerprint = (query) => {
+export const fingerprint = (query: string): string => {
   const res = module.fingerprint(query);
   assertError(res.error);
 
-  return res.fingerprint;
+  return String(res.fingerprint);
 };
 
-export const parsePLpgSQL = (functionSource) => {
+export const parsePLpgSQL = (functionSource: string): any => {
   const res = module.parse_plpgsql(functionSource);
   assertError(res.error);
 
-  return JSON.parse(res.plpgsql_funcs);
+  return JSON.parse(String(res.plpgsql_funcs));
 };
