@@ -9,7 +9,7 @@
     "url": "https://github.com/Hilzu/libpg-query-node/issues"
   },
   "repository": {
-    "url": "git@github.com:Hilzu/libpg-query-node.git",
+    "url": "git+ssh://git@github.com/Hilzu/libpg-query-node.git",
     "type": "git",
     "directory": "./packages/libpg-query-wasm"
   },
