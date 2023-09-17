@@ -1,3 +1,4 @@
+dist
+emsdk-cache
 libpg_query
 node_modules
-dist
