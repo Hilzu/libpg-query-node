@@ -12,20 +12,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        node-version: [20.x]
-
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: "true"
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: "npm"
       - name: Install Emscripten
         uses: mymindstorm/setup-emsdk@v12
@@ -34,4 +28,30 @@ jobs:
           actions-cache-folder: "emsdk-cache"
       - run: npm ci
       - run: npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: libpg-query-wasm
+          path: packages/libpg-query-wasm/dist
+
+  test:
+    needs: [build]
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [18.x, 20.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - uses: actions/download-artifact@v3
+        with:
+          name: libpg-query-wasm
+          path: packages/libpg-query-wasm/dist
       - run: npm test
