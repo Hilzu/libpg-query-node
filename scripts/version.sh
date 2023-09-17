@@ -8,7 +8,7 @@ version_type=$2
 echo "Making a $version_type release for $package"
 
 npm version "$version_type" --workspace "$package"
-new_version=$(jq -r .version "packages/$package/package.json")
+new_version=v$(jq -r .version "packages/$package/package.json")
 echo "New version: $new_version"
 
 echo "Committing and pushing changes"
@@ -19,6 +19,3 @@ fi
 git add package.json "packages/$package/package.json" package-lock.json
 git commit -m "$package: $new_version"
 git push
-
-echo "Publishing $package@$new_version"
-npm publish --provenance --workspace "$package" --access public
