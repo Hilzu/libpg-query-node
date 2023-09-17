@@ -31,6 +31,7 @@ jobs:
         uses: mymindstorm/setup-emsdk@v12
         with:
           version: "3.1.45"
+          actions-cache-folder: "emsdk-cache"
       - run: npm ci
       - run: npm run build
       - run: npm test
