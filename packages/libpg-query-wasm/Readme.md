@@ -10,14 +10,19 @@ npm install libpg-query-wasm
 
 ## API
 
+<!-- !test program node --input-type=module -->
+
 ### `parse(query: string): Record<string, any>`
 
 Parses a query and returns the parse tree.
 
 [Usage in libpg_query documentation][usage-parse].
 
+<!-- !test check parse -->
+
 ```js
 import { parse } from "libpg-query-wasm";
+import { strict as assert } from "node:assert";
 
 const parseTree = parse("SELECT 1");
 assert.deepEqual(parseTree, {
@@ -49,8 +54,11 @@ Parse a PL/pgSQL functions from given source and return the parse trees.
 
 [Usage in libpg_query documentation][usage-parse-plpgsql].
 
+<!-- !test check parsePLpgSQL -->
+
 ```js
 import { parsePLpgSQL } from "libpg-query-wasm";
+import { strict as assert } from "node:assert";
 
 const functions = parsePLpgSQL(`
 CREATE FUNCTION f() RETURNS integer AS $$
@@ -94,8 +102,11 @@ Fingerprinting allows you to identify similar queries.
 
 [Usage in libpg_query documentation][usage-fingerprint].
 
+<!-- !test check fingerprint -->
+
 ```js
 import { fingerprint } from "libpg-query-wasm";
+import { strict as assert } from "node:assert";
 
 const hex = fingerprint("select 1");
 assert.equal(hex, "50fde20626009aba");
@@ -107,8 +118,11 @@ Scans a query and returns the tokens.
 
 [Usage in libpg_query documentation][usage-scan].
 
+<!-- !test check scan -->
+
 ```js
 import { scan } from "libpg-query-wasm";
+import { strict as assert } from "node:assert";
 
 const res = scan("select * from table -- comment");
 assert.deepEqual(res.tokens, [

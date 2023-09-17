@@ -29,8 +29,8 @@
     "test": "npm run test:format && npm run --workspaces --if-present test",
     "test:format": "npm run prettier -- --check"
   },
-  "dependencies": {},
   "devDependencies": {
-    "prettier": "3.0.3"
+    "prettier": "3.0.3",
+    "txm": "^8.2.0"
   }
 }

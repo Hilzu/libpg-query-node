@@ -27,7 +27,9 @@
     "clean": "rm -rf dist/* && (cd libpg_query && make clean)",
     "copy:proto": "cp libpg_query/protobuf/pg_query.proto dist/",
     "emcc": "emcc -O3 -Wall -Werror --bind -I libpg_query -L libpg_query -l pg_query lib.cpp",
-    "test": "node --test test/"
+    "test": "npm run test:node && npm run test:readme",
+    "test:node": "node --test test/",
+    "test:readme": "txm Readme.md"
   },
   "dependencies": {
     "protobufjs": "~7.2.5"
