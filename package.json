@@ -26,8 +26,10 @@
     "build": "npm run --workspaces --if-present build",
     "format": "npm run prettier -- --write",
     "prettier": "prettier .",
-    "test": "npm run test:format && npm run --workspaces --if-present test",
-    "test:format": "npm run prettier -- --check"
+    "test": "npm run test:root && npm run test:workspaces",
+    "test:format": "npm run prettier -- --check",
+    "test:root": "npm run test:format",
+    "test:workspaces": "npm run --workspaces --if-present test"
   },
   "devDependencies": {
     "prettier": "3.0.3",
