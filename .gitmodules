@@ -1,3 +1,4 @@
 [submodule "packages/libpg-query-wasm/libpg_query"]
 	path = packages/libpg-query-wasm/libpg_query
 	url = https://github.com/pganalyze/libpg_query.git
+	ignore = dirty
