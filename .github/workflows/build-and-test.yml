@@ -32,7 +32,8 @@ jobs:
           version: "3.1.45"
           actions-cache-folder: "emsdk-cache"
       - run: npm ci
-      - uses: actions/cache@v3
+      - name: Cache libpg_query build
+        uses: actions/cache@v3
         with:
           path: packages/libpg-query-wasm/libpg_query
           key: libpg-query-${{ runner.os }}-${{ steps.submodule.outputs.hash }}
