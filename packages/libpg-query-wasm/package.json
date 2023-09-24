@@ -13,6 +13,18 @@
     "type": "git",
     "directory": "./packages/libpg-query-wasm"
   },
+  "keywords": [
+    "psql",
+    "postgres",
+    "postgresql",
+    "libpg_query",
+    "pg",
+    "query",
+    "wasm",
+    "webassembly",
+    "bindings",
+    "sql"
+  ],
   "type": "module",
   "exports": {
     "types": "./dist/libpg-query.d.ts",
