@@ -11,9 +11,10 @@ export interface ModuleError {
 }
 
 export interface MainModule {
-  parse(query: string): { error: ModuleError; parse_tree: string };
-  scan(query: string): ModuleError;
   get_protobuf(): Uint8Array;
+  parse(query: string): ModuleError;
+  free_parse_result(): void;
+  scan(query: string): ModuleError;
   free_scan_result(): void;
   fingerprint(query: string): { error: ModuleError; fingerprint: string };
   parse_plpgsql(functionSource: string): {

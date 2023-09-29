@@ -1,22 +1,22 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { parse } from "libpg-query-wasm";
+import { parse, ParseResult } from "libpg-query-wasm";
 
 describe("parse", () => {
   it("parses simple statement", () => {
-    const res = parse("SELECT 1");
-    assert.deepEqual(res, {
+    const msg = parse("SELECT 1");
+    assert.deepEqual(ParseResult.toObject(msg, { enums: String }), {
       stmts: [
         {
           stmt: {
-            SelectStmt: {
+            selectStmt: {
               limitOption: "LIMIT_OPTION_DEFAULT",
               op: "SETOP_NONE",
               targetList: [
                 {
-                  ResTarget: {
+                  resTarget: {
                     location: 7,
-                    val: { A_Const: { ival: { ival: 1 }, location: 7 } },
+                    val: { aConst: { ival: { ival: 1 }, location: 7 } },
                   },
                 },
               ],

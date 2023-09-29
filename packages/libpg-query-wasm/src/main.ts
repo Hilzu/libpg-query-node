@@ -26,11 +26,17 @@ function assertError(error: ModuleError) {
   throw err;
 }
 
-export const parse = (query: string): any => {
-  const res = module.parse(query);
-  assertError(res.error);
+export const ParseResult = pg_query.ParseResult;
 
-  return JSON.parse(res.parse_tree);
+export const parse = (query: string): pg_query.ParseResult => {
+  const error = module.parse(query);
+  try {
+    assertError(error);
+    const buf = module.get_protobuf();
+    return ParseResult.decode(buf);
+  } finally {
+    module.free_parse_result();
+  }
 };
 
 export const ScanResult = pg_query.ScanResult;
