@@ -59,7 +59,9 @@ export const fingerprint = (query: string): string => {
   return res.fingerprint;
 };
 
-export const parsePLpgSQL = (functionSource: string): any => {
+export const parsePLpgSQL = (
+  functionSource: string,
+): Array<Record<string, any>> => {
   const res = module.parse_plpgsql(functionSource);
   assertError(res.error);
 
