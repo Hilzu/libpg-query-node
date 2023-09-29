@@ -151,6 +151,19 @@ We use the [protobuf.js][protobufjs] library to decode the messages returned by
 can find more information about the usage of the messages in the [protobufjs
 documentation][protobufjs-usage].
 
+The full generated protobufjs module and Typescript types are available as the
+`pg_query` export from this package.
+
+<!-- !test check pg_query -->
+
+```js
+import { scan, pg_query } from "libpg-query-wasm";
+import { strict as assert } from "node:assert";
+
+const message = scan("select 1");
+assert.equal(message.tokens[0].token, pg_query.Token.SELECT);
+```
+
 [libpg_query]: https://github.com/pganalyze/libpg_query
 [usage-parse]: https://github.com/pganalyze/libpg_query#usage-parsing-a-query
 [usage-scan]:
