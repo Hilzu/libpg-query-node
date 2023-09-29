@@ -7,4 +7,16 @@ describe("fingerprint", () => {
     const res = fingerprint("select 1");
     assert.equal(res, "50fde20626009aba");
   });
+
+  it("throws on invalid argument", () => {
+    assert.throws(() => {
+      fingerprint(null);
+    });
+    assert.throws(() => {
+      fingerprint(2);
+    });
+    assert.throws(() => {
+      fingerprint(undefined);
+    });
+  });
 });
