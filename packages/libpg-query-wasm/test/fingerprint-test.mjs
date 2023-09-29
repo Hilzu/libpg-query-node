@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { fingerprint } from "../dist/libpg-query.js";
+import { fingerprint } from "libpg-query-wasm";
 
 describe("fingerprint", () => {
   it("fingerprint simple statement", () => {
