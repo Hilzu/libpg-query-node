@@ -37,12 +37,13 @@ export const ScanResult = pg_query.ScanResult;
 
 export const scan = (query: string): pg_query.ScanResult => {
   const error = module.scan(query);
-  assertError(error);
-
-  const buf = module.get_protobuf();
-  const scanResult = ScanResult.decode(buf);
-  module.free_scan_result();
-  return scanResult;
+  try {
+    assertError(error);
+    const buf = module.get_protobuf();
+    return ScanResult.decode(buf);
+  } finally {
+    module.free_scan_result();
+  }
 };
 
 export const fingerprint = (query: string): string => {
