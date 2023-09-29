@@ -48,6 +48,48 @@ assert.deepEqual(parseTree, {
 });
 ```
 
+### `fingerprint(query: string): string`
+
+Parses a query and returns the fingerprint of the parse tree as a hex string.
+Fingerprinting allows you to identify similar queries.
+
+[Usage in libpg_query documentation][usage-fingerprint].
+
+<!-- !test check fingerprint -->
+
+```js
+import { fingerprint } from "libpg-query-wasm";
+import { strict as assert } from "node:assert";
+
+const hex = fingerprint("select 1");
+assert.equal(hex, "50fde20626009aba");
+```
+
+### `scan(query: string): ScanResult`
+
+Scans a query and returns the tokens.
+
+[Usage in libpg_query documentation][usage-scan].
+
+<!-- !test check scan -->
+
+```js
+import { scan, ScanResult } from "libpg-query-wasm";
+import { strict as assert } from "node:assert";
+
+const message = scan("select * from table -- comment");
+assert.deepEqual(ScanResult.toObject(message, { enums: String }), {
+  version: 150001,
+  tokens: [
+    { end: 6, token: "SELECT", keywordKind: "RESERVED_KEYWORD" },
+    { start: 7, end: 8, token: "ASCII_42" },
+    { start: 9, end: 13, token: "FROM", keywordKind: "RESERVED_KEYWORD" },
+    { start: 14, end: 19, token: "TABLE", keywordKind: "RESERVED_KEYWORD" },
+    { start: 20, end: 30, token: "SQL_COMMENT" },
+  ],
+});
+```
+
 ### `parsePLpgSQL(functionSource: string): Array<Record<string, any>>`
 
 Parse a PL/pgSQL functions from given source and return the parse trees.
@@ -95,64 +137,7 @@ assert.deepEqual(functions, [
 ]);
 ```
 
-### `fingerprint(query: string): string`
-
-Parses a query and returns the fingerprint of the parse tree as a hex string.
-Fingerprinting allows you to identify similar queries.
-
-[Usage in libpg_query documentation][usage-fingerprint].
-
-<!-- !test check fingerprint -->
-
-```js
-import { fingerprint } from "libpg-query-wasm";
-import { strict as assert } from "node:assert";
-
-const hex = fingerprint("select 1");
-assert.equal(hex, "50fde20626009aba");
-```
-
-### `scan(query: string): Record<string, any>`
-
-Scans a query and returns the tokens.
-
-[Usage in libpg_query documentation][usage-scan].
-
-<!-- !test check scan -->
-
-```js
-import { scan } from "libpg-query-wasm";
-import { strict as assert } from "node:assert";
-
-const res = scan("select * from table -- comment");
-assert.deepEqual(res.tokens, [
-  {
-    end: 6,
-    keywordKind: "RESERVED_KEYWORD",
-    source: "select",
-    token: "SELECT",
-  },
-  { end: 8, source: "*", start: 7, token: "ASCII_42" },
-  {
-    end: 13,
-    keywordKind: "RESERVED_KEYWORD",
-    source: "from",
-    start: 9,
-    token: "FROM",
-  },
-  {
-    end: 19,
-    keywordKind: "RESERVED_KEYWORD",
-    source: "table",
-    start: 14,
-    token: "TABLE",
-  },
-  { end: 30, source: "-- comment", start: 20, token: "SQL_COMMENT" },
-]);
-```
-
 [libpg_query]: https://github.com/pganalyze/libpg_query
-[fingerprinting]: https://github.com/pganalyze/libpg_query/wiki/Fingerprinting
 [usage-parse]: https://github.com/pganalyze/libpg_query#usage-parsing-a-query
 [usage-scan]:
   https://github.com/pganalyze/libpg_query#usage-scanning-a-query-into-its-tokens-using-the-postgresql-scannerlexer

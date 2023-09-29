@@ -1,5 +1,5 @@
 import module, { ModuleError } from "./bindings-wrapper.js";
-import { ScanResult } from "./protobuf.js";
+import { pg_query } from "../dist/pg_query.js";
 
 export class LibpgQueryError extends Error {
   name = "LibpgQueryError";
@@ -33,17 +33,16 @@ export const parse = (query: string): any => {
   return JSON.parse(res.parse_tree);
 };
 
-export const scan = (query: string): Record<string, any> => {
+export const ScanResult = pg_query.ScanResult;
+
+export const scan = (query: string): pg_query.ScanResult => {
   const error = module.scan(query);
   assertError(error);
 
   const buf = module.get_protobuf();
-  const json = ScanResult.decode(buf).toJSON();
-  for (const token of json.tokens) {
-    token.source = query.slice(token.start ?? 0, token.end);
-  }
+  const scanResult = ScanResult.decode(buf);
   module.free_scan_result();
-  return json;
+  return scanResult;
 };
 
 export const fingerprint = (query: string): string => {
