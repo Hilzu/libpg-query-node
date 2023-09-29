@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { scan } from "../dist/libpg-query.js";
+import { scan } from "libpg-query-wasm";
 
 describe("scan", () => {
   it("scans simple statement", () => {

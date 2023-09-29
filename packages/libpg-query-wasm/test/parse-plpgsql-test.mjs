@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { parsePLpgSQL } from "../dist/libpg-query.js";
+import { parsePLpgSQL } from "libpg-query-wasm";
 
 describe("parse-plpgsql", () => {
   it("parses simple function", () => {
