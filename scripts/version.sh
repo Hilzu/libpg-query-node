@@ -18,4 +18,5 @@ if [[ -n "$CI" ]]; then
 fi
 git add package.json "packages/$package/package.json" package-lock.json
 git commit -m "$package: $new_version"
-git push
+git tag -a "$package-$new_version" -m "$package: $new_version"
+git push --follow-tags
