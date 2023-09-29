@@ -1,7 +1,7 @@
 import module, { ModuleError } from "./bindings-wrapper.js";
-import { pg_query } from "../dist/pg_query.js";
+import * as pgQuery from "./protobuf/pg_query.js";
 
-export { pg_query };
+export { pgQuery };
 
 export class LibpgQueryError extends Error {
   name = "LibpgQueryError";
@@ -28,9 +28,9 @@ function assertError(error: ModuleError) {
   throw err;
 }
 
-export const ParseResult = pg_query.ParseResult;
+export const ParseResult = pgQuery.ParseResult;
 
-export const parse = (query: string): pg_query.ParseResult => {
+export const parse = (query: string): pgQuery.ParseResult => {
   const error = module.parse(query);
   try {
     assertError(error);
@@ -41,9 +41,9 @@ export const parse = (query: string): pg_query.ParseResult => {
   }
 };
 
-export const ScanResult = pg_query.ScanResult;
+export const ScanResult = pgQuery.ScanResult;
 
-export const scan = (query: string): pg_query.ScanResult => {
+export const scan = (query: string): pgQuery.ScanResult => {
   const error = module.scan(query);
   try {
     assertError(error);
