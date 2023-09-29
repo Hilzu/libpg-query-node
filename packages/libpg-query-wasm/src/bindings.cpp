@@ -28,38 +28,39 @@ Error handleError(PgQueryError *error) {
   return err;
 }
 
-struct ParseResult {
-  std::string parse_tree;
-  Error error;
-};
+PgQueryProtobuf protobuf;
 
-ParseResult parse(std::string input) {
-  auto result = pg_query_parse(input.c_str());
-  ParseResult parse_result;
-  parse_result.parse_tree = std::string(result.parse_tree);
-  if (result.error) {
-    parse_result.error = handleError(result.error);
-  }
-  pg_query_free_parse_result(result);
-  return parse_result;
+val get_protobuf() {
+  return val(typed_memory_view(
+      protobuf.len, reinterpret_cast<unsigned char *>(protobuf.data)));
 }
+
+PgQueryProtobufParseResult parse_result;
+
+Error parse(std::string input) {
+  auto result = pg_query_parse_protobuf(input.c_str());
+  parse_result = result;
+  protobuf = result.parse_tree;
+  Error parse_error;
+  if (result.error) {
+    parse_error = handleError(result.error);
+  }
+  return parse_error;
+}
+
+void free_parse_result() { pg_query_free_protobuf_parse_result(parse_result); }
 
 PgQueryScanResult scan_result;
 
 Error scan(std::string input) {
   auto result = pg_query_scan(input.c_str());
   scan_result = result;
+  protobuf = result.pbuf;
   Error scan_error;
   if (result.error) {
     scan_error = handleError(result.error);
   }
   return scan_error;
-}
-
-val get_protobuf() {
-  return val(typed_memory_view(
-      scan_result.pbuf.len,
-      reinterpret_cast<unsigned char *>(scan_result.pbuf.data)));
 }
 
 void free_scan_result() { pg_query_free_scan_result(scan_result); }
@@ -105,15 +106,13 @@ EMSCRIPTEN_BINDINGS(my_module) {
       .field("cursorpos", &Error::cursorpos)
       .field("context", &Error::context);
 
-  value_object<ParseResult>("ParseResult")
-      .field("parse_tree", &ParseResult::parse_tree)
-      .field("error", &ParseResult::error);
+  function("get_protobuf", &get_protobuf);
 
   function("parse", &parse);
 
-  function("scan", &scan);
+  function("free_parse_result", &free_parse_result);
 
-  function("get_protobuf", &get_protobuf);
+  function("scan", &scan);
 
   function("free_scan_result", &free_scan_result);
 

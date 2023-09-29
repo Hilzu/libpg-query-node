@@ -12,7 +12,7 @@ npm install libpg-query-wasm
 
 <!-- !test program node --input-type=module -->
 
-### `parse(query: string): Record<string, any>`
+### `parse(query: string): ParseResult`
 
 Parses a query and returns the parse tree.
 
@@ -21,22 +21,22 @@ Parses a query and returns the parse tree.
 <!-- !test check parse -->
 
 ```js
-import { parse } from "libpg-query-wasm";
+import { parse, ParseResult } from "libpg-query-wasm";
 import { strict as assert } from "node:assert";
 
-const parseTree = parse("SELECT 1");
-assert.deepEqual(parseTree, {
+const message = parse("SELECT 1");
+assert.deepEqual(ParseResult.toObject(message, { enums: String }), {
   stmts: [
     {
       stmt: {
-        SelectStmt: {
+        selectStmt: {
           limitOption: "LIMIT_OPTION_DEFAULT",
           op: "SETOP_NONE",
           targetList: [
             {
-              ResTarget: {
+              resTarget: {
                 location: 7,
-                val: { A_Const: { ival: { ival: 1 }, location: 7 } },
+                val: { aConst: { ival: { ival: 1 }, location: 7 } },
               },
             },
           ],
