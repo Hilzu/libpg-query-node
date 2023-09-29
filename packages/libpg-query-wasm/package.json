@@ -40,7 +40,7 @@
     "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = ar rs/AR = emar rs/' Makefile && emmake make build)",
     "build:protobuf": "cp libpg_query/protobuf/pg_query.proto dist/ && npm run build:protobuf:js && npm run build:protobuf:js:post && npm run build:protobuf:ts",
     "build:protobuf:js": "pbjs -t static-module -w es6 -o dist/pg_query.js dist/pg_query.proto",
-    "build:protobuf:js:post": "sed -i.bak 's|^import.*|import $protobuf from \"protobufjs/minimal.js\"|' dist/pg_query.js",
+    "build:protobuf:js:post": "sed -i.bak 's|^import.*|import $protobuf from \"protobufjs/minimal.js\"|' dist/pg_query.js && rm -f dist/pg_query.js.bak",
     "build:protobuf:ts": "pbts -o dist/pg_query.d.ts dist/pg_query.js",
     "build:ts": "tsc",
     "build:wasm": "npm run emcc -- -o dist/bindings.mjs",
