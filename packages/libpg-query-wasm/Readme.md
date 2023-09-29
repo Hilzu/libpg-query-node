@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/libpg-query-wasm.svg)](https://badge.fury.io/js/libpg-query-wasm)
 
-Webassembly bindings for [libpg_query][libpg_query].
+Webassembly bindings and Typescript types for [libpg_query][libpg_query].
 
 ```shell
 npm install libpg-query-wasm
@@ -14,7 +14,8 @@ npm install libpg-query-wasm
 
 ### `parse(query: string): ParseResult`
 
-Parses a query and returns the parse tree.
+Parses a query and returns the parse tree as a Protocol Buffer
+[message](#using-protocol-buffers).
 
 [Usage in libpg_query documentation][usage-parse].
 
@@ -67,7 +68,8 @@ assert.equal(hex, "50fde20626009aba");
 
 ### `scan(query: string): ScanResult`
 
-Scans a query and returns the tokens.
+Scans a query and returns the tokens as a Protocol Buffer
+[message](#using-protocol-buffers).
 
 [Usage in libpg_query documentation][usage-scan].
 
@@ -137,6 +139,18 @@ assert.deepEqual(functions, [
 ]);
 ```
 
+## Using protocol buffers
+
+Some functions return a [Protocol Buffer][protobuf] message instance. Using
+these messages gives you access to the original fields with the correct types.
+If you'd rather use plain objects you can use the [`toObject`][to-object] static
+method to convert the message.
+
+We use the [protobuf.js][protobufjs] library to decode the messages returned by
+[libpg_query][libpg_query]. It's also used to generate the Typescript types. You
+can find more information about the usage of the messages in the [protobufjs
+documentation][protobufjs-usage].
+
 [libpg_query]: https://github.com/pganalyze/libpg_query
 [usage-parse]: https://github.com/pganalyze/libpg_query#usage-parsing-a-query
 [usage-scan]:
@@ -145,3 +159,8 @@ assert.deepEqual(functions, [
   https://github.com/pganalyze/libpg_query#usage-fingerprinting-a-query
 [usage-parse-plpgsql]:
   https://github.com/pganalyze/libpg_query#usage-parsing-a-plpgsql-function
+[protobuf]: https://protobuf.dev/
+[to-object]:
+  https://github.com/protobufjs/protobuf.js#toolset:~:text=to%20a%20string-,Message.toObject,-(message%3A%20Message
+[protobufjs]: https://github.com/protobufjs/protobuf.js#readme
+[protobufjs-usage]: https://github.com/protobufjs/protobuf.js#usage
