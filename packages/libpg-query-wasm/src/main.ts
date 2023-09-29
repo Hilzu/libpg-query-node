@@ -1,6 +1,8 @@
 import module, { ModuleError } from "./bindings-wrapper.js";
 import { pg_query } from "../dist/pg_query.js";
 
+export { pg_query };
+
 export class LibpgQueryError extends Error {
   name = "LibpgQueryError";
   /** source of exception (e.g. parse.l) */
