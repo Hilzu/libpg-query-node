@@ -107,4 +107,16 @@ $$ LANGUAGE plpgsql;`);
       },
     ]);
   });
+
+  it("throws on invalid argument", () => {
+    assert.throws(() => {
+      parsePLpgSQL(null);
+    });
+    assert.throws(() => {
+      parsePLpgSQL(2);
+    });
+    assert.throws(() => {
+      parsePLpgSQL(undefined);
+    });
+  });
 });

@@ -39,4 +39,16 @@ describe("parse", () => {
       },
     );
   });
+
+  it("throws on invalid argument", () => {
+    assert.throws(() => {
+      parse(null);
+    });
+    assert.throws(() => {
+      parse(2);
+    });
+    assert.throws(() => {
+      parse(undefined);
+    });
+  });
 });

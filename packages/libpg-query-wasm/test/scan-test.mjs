@@ -13,4 +13,21 @@ describe("scan", () => {
       ],
     });
   });
+
+  it("returns no tokens with empty query", () => {
+    const msg = scan("");
+    assert.deepEqual(msg.tokens, []);
+  });
+
+  it("throws on invalid argument", () => {
+    assert.throws(() => {
+      scan(null);
+    });
+    assert.throws(() => {
+      scan(2);
+    });
+    assert.throws(() => {
+      scan(undefined);
+    });
+  });
 });
