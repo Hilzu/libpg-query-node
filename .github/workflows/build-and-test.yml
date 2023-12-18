@@ -39,7 +39,7 @@ jobs:
           key: libpg-query-${{ runner.os }}-${{ steps.submodule.outputs.hash }}
       - run: npm run build
       - run: npm run test:root
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: libpg-query-wasm
           path: packages/libpg-query-wasm/dist
