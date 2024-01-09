@@ -2,7 +2,8 @@
 
 [![npm version](https://badge.fury.io/js/libpg-query-wasm.svg)](https://badge.fury.io/js/libpg-query-wasm)
 
-Webassembly bindings and Typescript types for [libpg_query][libpg_query].
+Webassembly bindings and Typescript types for [libpg_query][libpg_query] with
+support for Windows, Linux and macOS.
 
 ```shell
 npm install libpg-query-wasm
