@@ -30,7 +30,7 @@ jobs:
           cache: "npm"
           registry-url: "https://registry.npmjs.org"
       - name: Install Emscripten
-        uses: mymindstorm/setup-emsdk@v13
+        uses: mymindstorm/setup-emsdk@v14
         with:
           version: "3.1.45"
           actions-cache-folder: "emsdk-cache"
