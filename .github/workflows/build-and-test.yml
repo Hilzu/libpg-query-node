@@ -27,13 +27,13 @@ jobs:
           node-version: 20.x
           cache: "npm"
       - name: Install Emscripten
-        uses: mymindstorm/setup-emsdk@v13
+        uses: mymindstorm/setup-emsdk@v14
         with:
           version: "3.1.45"
           actions-cache-folder: "emsdk-cache"
       - run: npm ci
       - name: Cache libpg_query build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: packages/libpg-query-wasm/libpg_query
           key: libpg-query-${{ runner.os }}-${{ steps.submodule.outputs.hash }}
