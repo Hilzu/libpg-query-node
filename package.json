@@ -32,7 +32,7 @@
     "test:workspaces": "npm run --workspaces --if-present test"
   },
   "devDependencies": {
-    "prettier": "3.2.5",
+    "prettier": "3.3.0",
     "txm": "^8.2.0",
     "typescript": "~5.4.2"
   }
