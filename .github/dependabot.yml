@@ -1,23 +1,23 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    versioning-strategy: increase-if-necessary
-    schedule:
-      interval: "weekly"
-    groups:
-      development-dependencies:
-        dependency-type: development
-      production-dependencies:
-        dependency-type: production
+# version: 2
+# updates:
+#   - package-ecosystem: "npm"
+#     directory: "/"
+#     versioning-strategy: increase-if-necessary
+#     schedule:
+#       interval: "weekly"
+#     groups:
+#       development-dependencies:
+#         dependency-type: development
+#       production-dependencies:
+#         dependency-type: production
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    groups:
-      all-actions:
-        patterns:
-          - "*"
-    schedule:
-      interval: "monthly"
+#   - package-ecosystem: "github-actions"
+#     directory: "/"
+#     groups:
+#       all-actions:
+#         patterns:
+#           - "*"
+#     schedule:
+#       interval: "monthly"
