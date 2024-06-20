@@ -31,6 +31,10 @@ jobs:
         with:
           version: "3.1.45"
           actions-cache-folder: "emsdk-cache"
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v2
+        with:
+          version: "24.x"
       - run: npm ci
       - name: Cache libpg_query build
         uses: actions/cache@v4

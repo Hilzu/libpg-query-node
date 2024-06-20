@@ -2,3 +2,4 @@ dist
 emsdk-cache
 libpg_query
 node_modules
+packages/libpg-query-wasm/src/protobuf/pg_query.ts
