@@ -1,27 +1,43 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
-import { parse, ParseResult } from "libpg-query-wasm";
+import { parse, pgQuery } from "libpg-query-wasm";
+import { omitUndefinedProps } from "./utils.mjs";
 
 describe("parse", () => {
   it("parses simple statement", () => {
-    const msg = parse("SELECT 1");
-    assert.deepEqual(ParseResult.toObject(msg, { enums: String }), {
+    const result = omitUndefinedProps(parse("SELECT 1"));
+    assert.deepEqual(result, {
       stmts: [
         {
           stmt: {
             selectStmt: {
-              limitOption: "LIMIT_OPTION_DEFAULT",
-              op: "SETOP_NONE",
+              all: false,
+              distinctClause: [],
+              fromClause: [],
+              groupClause: [],
+              groupDistinct: false,
+              lockingClause: [],
+              sortClause: [],
+              limitOption: pgQuery.LimitOption.LIMIT_OPTION_DEFAULT,
+              op: pgQuery.SetOperation.SETOP_NONE,
               targetList: [
                 {
                   resTarget: {
+                    indirection: [],
                     location: 7,
-                    val: { aConst: { ival: { ival: 1 }, location: 7 } },
+                    name: "",
+                    val: {
+                      aConst: { isnull: false, ival: { ival: 1 }, location: 7 },
+                    },
                   },
                 },
               ],
+              valuesLists: [],
+              windowClause: [],
             },
           },
+          stmtLen: 0,
+          stmtLocation: 0,
         },
       ],
       version: 150001,

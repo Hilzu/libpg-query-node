@@ -38,10 +38,9 @@
     "build": "npm run build:libpg_query && npm run build:wasm && npm run build:protobuf && npm run build:ts",
     "build:clean": "npm run clean && npm run build",
     "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = ar rs/AR = emar rs/' Makefile && emmake make build)",
-    "build:protobuf": "cp libpg_query/protobuf/pg_query.proto dist/ && npm run build:protobuf:js && npm run build:protobuf:js:post && npm run build:protobuf:ts",
-    "build:protobuf:js": "pbjs -t static-module -w es6 -o dist/pg_query.js dist/pg_query.proto",
-    "build:protobuf:js:post": "sed -i.bak 's|^import.*|import $protobuf from \"protobufjs/minimal.js\"|' dist/pg_query.js && rm -f dist/pg_query.js.bak",
-    "build:protobuf:ts": "pbts -o dist/pg_query.d.ts dist/pg_query.js",
+    "build:protobuf": "npm run build:protobuf:copy && npm run build:protobuf:ts",
+    "build:protobuf:copy": "cp libpg_query/protobuf/pg_query.proto dist/",
+    "build:protobuf:ts": "protoc --ts_proto_out=./src/protobuf --ts_proto_opt=esModuleInterop=true,importSuffix=.js,outputPartialMethods=false,exportCommonSymbols=false,forceLong=bigint,useOptionals=all -I dist pg_query.proto",
     "build:ts": "tsc",
     "build:wasm": "npm run emcc -- -o dist/bindings.mjs",
     "clean": "npm run clean:package && npm run clean:libpg_query",
@@ -49,13 +48,13 @@
     "clean:package": "rm -rf dist/*",
     "emcc": "emcc -O3 -Wall -Werror --bind -I libpg_query -L libpg_query -l pg_query src/bindings.cpp",
     "test": "npm run test:node && npm run test:readme",
-    "test:node": "node --test test/",
+    "test:node": "node --test",
     "test:readme": "txm Readme.md"
   },
   "dependencies": {
     "protobufjs": "~7.2.5"
   },
   "devDependencies": {
-    "protobufjs-cli": "^1.1.2"
+    "ts-proto": "^1.162.1"
   }
 }
