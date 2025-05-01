@@ -1,39 +1,38 @@
 {
-  "name": "libpg-query-node",
-  "version": "0.0.0",
-  "description": "Collection of packages for using libpg_query in Node.js",
-  "type": "module",
-  "author": "Santeri Hiltunen <github@me.hilzu.moe> (https://hilzu.moe/)",
-  "license": "BSD-3-Clause",
-  "homepage": "https://github.com/Hilzu/libpg-query-node#readme",
-  "bugs": {
-    "url": "https://github.com/Hilzu/libpg-query-node/issues"
-  },
-  "repository": {
-    "url": "git+ssh://git@github.com/Hilzu/libpg-query-node.git",
-    "type": "git"
-  },
-  "private": true,
-  "engines": {
-    "node": "^18.0.0 || >=20.0.0",
-    "npm": ">=9.8.1"
-  },
-  "workspaces": [
-    "packages/libpg-query-wasm",
-    "packages/prettier-plugin-postgresql"
-  ],
-  "scripts": {
-    "build": "npm run --workspaces --if-present build",
-    "format": "npm run prettier -- --write",
-    "prettier": "prettier .",
-    "test": "npm run test:root && npm run test:workspaces",
-    "test:format": "npm run prettier -- --check",
-    "test:root": "npm run test:format",
-    "test:workspaces": "npm run --workspaces --if-present test"
-  },
-  "devDependencies": {
-    "prettier": "3.2.5",
-    "txm": "^8.2.0",
-    "typescript": "~5.4.2"
-  }
+    "name": "libpg-query-node",
+    "version": "0.0.0",
+    "description": "Collection of packages for using libpg_query in Node.js",
+    "type": "module",
+    "author": "Santeri Hiltunen <github@me.hilzu.moe> (https://hilzu.moe/)",
+    "license": "BSD-3-Clause",
+    "homepage": "https://github.com/Hilzu/libpg-query-node#readme",
+    "bugs": {
+        "url": "https://github.com/Hilzu/libpg-query-node/issues"
+    },
+    "repository": {
+        "url": "git+ssh://git@github.com/Bastion-Technologies/libpg-query-node.git",
+        "type": "git"
+    },
+    "private": true,
+    "engines": {
+        "node": "^18.0.0 || >=20.0.0",
+        "npm": ">=9.8.1"
+    },
+    "workspaces": [
+        "packages/libpg-query-wasm"
+    ],
+    "scripts": {
+        "build": "npm run --workspaces --if-present build",
+        "format": "npm run prettier -- --write",
+        "prettier": "prettier .",
+        "test": "npm run test:root && npm run test:workspaces",
+        "test:format": "npm run prettier -- --check",
+        "test:root": "npm run test:format",
+        "test:workspaces": "npm run --workspaces --if-present test"
+    },
+    "devDependencies": {
+        "prettier": "3.2.5",
+        "txm": "^8.2.0",
+        "typescript": "~5.4.2"
+    }
 }

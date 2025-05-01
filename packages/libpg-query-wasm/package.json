@@ -1,61 +1,61 @@
 {
-  "name": "libpg-query-wasm",
-  "version": "0.2.1",
-  "description": "Webassembly bindings for libpg_query",
-  "author": "Santeri Hiltunen <github@me.hilzu.moe> (https://hilzu.moe/)",
-  "license": "BSD-3-Clause",
-  "homepage": "https://github.com/Hilzu/libpg-query-node/tree/main/packages/libpg-query-wasm#readme",
-  "bugs": {
-    "url": "https://github.com/Hilzu/libpg-query-node/issues"
-  },
-  "repository": {
-    "url": "git+ssh://git@github.com/Hilzu/libpg-query-node.git",
-    "type": "git",
-    "directory": "./packages/libpg-query-wasm"
-  },
-  "keywords": [
-    "psql",
-    "postgres",
-    "postgresql",
-    "libpg_query",
-    "pg",
-    "query",
-    "wasm",
-    "webassembly",
-    "bindings",
-    "sql"
-  ],
-  "type": "module",
-  "exports": {
-    "types": "./dist/main.d.ts",
-    "default": "./dist/main.js"
-  },
-  "engines": {
-    "node": "^18.0.0 || >=20.0.0",
-    "npm": ">=9.8.1"
-  },
-  "scripts": {
-    "build": "npm run build:libpg_query && npm run build:wasm && npm run build:protobuf && npm run build:ts",
-    "build:clean": "npm run clean && npm run build",
-    "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = ar rs/AR = emar rs/' Makefile && emmake make build)",
-    "build:protobuf": "cp libpg_query/protobuf/pg_query.proto dist/ && npm run build:protobuf:js && npm run build:protobuf:js:post && npm run build:protobuf:ts",
-    "build:protobuf:js": "pbjs -t static-module -w es6 -o dist/pg_query.js dist/pg_query.proto",
-    "build:protobuf:js:post": "sed -i.bak 's|^import.*|import $protobuf from \"protobufjs/minimal.js\"|' dist/pg_query.js && rm -f dist/pg_query.js.bak",
-    "build:protobuf:ts": "pbts -o dist/pg_query.d.ts dist/pg_query.js",
-    "build:ts": "tsc",
-    "build:wasm": "npm run emcc -- -o dist/bindings.mjs",
-    "clean": "npm run clean:package && npm run clean:libpg_query",
-    "clean:libpg_query": "(cd libpg_query && make clean)",
-    "clean:package": "rm -rf dist/*",
-    "emcc": "emcc -O3 -Wall -Werror --bind -I libpg_query -L libpg_query -l pg_query src/bindings.cpp",
-    "test": "npm run test:node && npm run test:readme",
-    "test:node": "node --test test/",
-    "test:readme": "txm Readme.md"
-  },
-  "dependencies": {
-    "protobufjs": "~7.2.5"
-  },
-  "devDependencies": {
-    "protobufjs-cli": "^1.1.2"
-  }
+    "name": "@bastion-technologies/libpg-query-wasm",
+    "version": "0.2.1",
+    "description": "Webassembly bindings for libpg_query",
+    "author": "Santeri Hiltunen <github@me.hilzu.moe> (https://hilzu.moe/)",
+    "license": "BSD-3-Clause",
+    "homepage": "https://github.com/Hilzu/libpg-query-node/tree/main/packages/libpg-query-wasm#readme",
+    "bugs": {
+        "url": "https://github.com/Hilzu/libpg-query-node/issues"
+    },
+    "repository": {
+        "url": "git+ssh://git@github.com/Hilzu/libpg-query-node.git",
+        "type": "git",
+        "directory": "./packages/libpg-query-wasm"
+    },
+    "keywords": [
+        "psql",
+        "postgres",
+        "postgresql",
+        "libpg_query",
+        "pg",
+        "query",
+        "wasm",
+        "webassembly",
+        "bindings",
+        "sql"
+    ],
+    "type": "module",
+    "exports": {
+        "types": "./dist/main.d.ts",
+        "default": "./dist/main.js"
+    },
+    "engines": {
+        "node": "^18.0.0 || >=20.0.0",
+        "npm": ">=9.8.1"
+    },
+    "scripts": {
+        "build": "npm run build:libpg_query && npm run build:wasm && npm run build:protobuf && npm run build:ts",
+        "build:clean": "npm run clean && npm run build",
+        "build:libpg_query": "(cd libpg_query && sed -i.bak 's/AR = ar rs/AR = emar rs/' Makefile && emmake make build)",
+        "build:protobuf": "cp libpg_query/protobuf/pg_query.proto dist/ && npm run build:protobuf:js && npm run build:protobuf:js:post && npm run build:protobuf:ts",
+        "build:protobuf:js": "pbjs -t static-module -w es6 -o dist/pg_query.js dist/pg_query.proto",
+        "build:protobuf:js:post": "sed -i.bak 's|^import.*|import $protobuf from \"protobufjs/minimal.js\"|' dist/pg_query.js && rm -f dist/pg_query.js.bak",
+        "build:protobuf:ts": "pbts -o dist/pg_query.d.ts dist/pg_query.js",
+        "build:ts": "tsc",
+        "build:wasm": "npm run emcc -- -o dist/bindings.mjs",
+        "clean": "npm run clean:package && npm run clean:libpg_query",
+        "clean:libpg_query": "(cd libpg_query && make clean)",
+        "clean:package": "rm -rf dist/*",
+        "emcc": "emcc -O3 -Wall -Werror --bind -I libpg_query -L libpg_query -l pg_query src/bindings.cpp",
+        "test": "npm run test:node && npm run test:readme",
+        "test:node": "node --test test/",
+        "test:readme": "txm Readme.md"
+    },
+    "dependencies": {
+        "protobufjs": "~7.2.5"
+    },
+    "devDependencies": {
+        "protobufjs-cli": "^1.1.2"
+    }
 }
